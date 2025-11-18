@@ -1,187 +1,123 @@
 <script setup lang="ts">
-import type { Prodi } from '@prisma/client';
+const route = useRoute();
+const router = useRouter();
+const kodeProdi = route.params.kode as string;
 
-// Fetch data
-const {
-    data: prodiData,
-    refresh
-} = await useFetch('/api/prodi');
-// prodiData.value akan berisi { message: '...', data: [...] }
+// --- Fetch Single Data ---
+const { data: detailData, pending, error } = await useFetch(`/api/prodi/${kodeProdi}`);
 
-interface ProdiFormData {
-    Kd_Prodi: string;
-    Nama_Prodi: string;
-    Fakultas: string;
-    Nama_KetuaProdi: string;
-}
-
-const defaultFormData: ProdiFormData = {
+// State Form
+const formData = ref({
     Kd_Prodi: '',
     Nama_Prodi: '',
     Fakultas: '',
     Nama_KetuaProdi: '',
-};
+});
 
-const formData = ref<ProdiFormData>({ ...defaultFormData });
-
-const isEditing = ref(false);
 const isSubmitting = ref(false);
 
-async function handleSubmit() {
+// Isi form saat data berhasil diload
+watchEffect(() => {
+    if (detailData.value?.data) {
+        const d = detailData.value.data;
+        formData.value = {
+            Kd_Prodi: d.Kd_Prodi,
+            Nama_Prodi: d.Nama_Prodi,
+            Fakultas: d.Fakultas,
+            Nama_KetuaProdi: d.Nama_KetuaProdi || '',
+        };
+    }
+});
+
+// --- Action: Update ---
+async function handleUpdate() {
     isSubmitting.value = true;
     try {
-        if (isEditing.value) {
-            // --- UPDATE (U) ---
-            await $fetch(`/api/prodi/${formData.value.Kd_Prodi}`, {
-                method: 'PUT',
-                body: formData.value,
-            });
-        } else {
-            // --- CREATE (C) ---
-            await $fetch('/api/prodi', {
-                method: 'POST',
-                body: formData.value,
-            });
-        }
-
-        await refresh();
-        resetForm();
-
+        await $fetch(`/api/prodi/${kodeProdi}`, {
+            method: 'PUT',
+            body: formData.value,
+        });
+        alert('Data berhasil diperbarui!');
+        router.push('/prodi'); // Kembali ke list
     } catch (err) {
-        console.error('Error submitting form:', err);
+        console.error(err);
+        alert('Gagal memperbarui data.');
     } finally {
         isSubmitting.value = false;
     }
 }
-
-async function handleDelete(kodeProdi: string) {
-    if (!confirm('Apakah Anda yakin ingin menghapus prodi ini?')) {
-        return;
-    }
-
-    try {
-        // --- DELETE (D) ---
-        await $fetch(`/api/prodi/${kodeProdi}`, {
-            method: 'DELETE',
-        });
-
-        await refresh();
-
-        // Jika prodi yang sedang diedit adalah yang baru saja dihapus, reset form
-        if (isEditing.value && formData.value.Kd_Prodi === kodeProdi) {
-            resetForm();
-        }
-
-    } catch (err) {
-        console.error('Error deleting prodi:', err);
-    }
-}
-
-function startEdit(prodi: Prodi) {
-    // Kita copy datanya agar tidak mengubah data di list secara langsung
-    formData.value = {
-        ...prodi,
-        // Pastikan Nama_KetuaProdi tidak null/undefined, ganti jadi string kosong
-        Nama_KetuaProdi: prodi.Nama_KetuaProdi || ''
-    };
-    isEditing.value = true;
-    // Bawa layar ke atas untuk fokus ke form
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-}
-
-function resetForm() {
-    formData.value = { ...defaultFormData };
-    isEditing.value = false;
-}
-
-const inputClasses = "w-full bg-gray-700 border border-gray-600 rounded-md px-3 py-2 text-gray-200 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-cyan-400 disabled:opacity-50";
-const buttonClasses = "px-4 py-2 rounded-md font-medium text-white transition-colors disabled:opacity-50";
 </script>
 
 <template>
-    <div class="min-h-screen bg-gray-900 text-gray-200 p-4 md:p-8">
-        <div class="max-w-4xl mx-auto">
+    <div class="min-h-screen bg-slate-950 text-slate-200 flex items-center justify-center p-6">
+        
+        <div v-if="pending" class="text-cyan-400 animate-pulse">Memuat data...</div>
+        
+        <div v-else-if="error" class="text-center">
+            <h1 class="text-3xl font-bold text-red-500 mb-2">404</h1>
+            <p class="text-slate-400 mb-4">Data Prodi tidak ditemukan.</p>
+            <NuxtLink to="/prodi" class="text-cyan-400 hover:underline">Kembali ke Daftar</NuxtLink>
+        </div>
 
-            <h1 class="text-3xl font-bold text-cyan-400 mb-6 text-center">
-                Manajemen Program Studi
-            </h1>
-
-            <!-- Form untuk menambah atau mengedit prodi -->
-            <form @submit.prevent="handleSubmit" class="bg-gray-800 p-6 rounded-xl shadow-lg mb-8 space-y-4">
-                <h2 class="text-xl font-semibold text-white mb-2">
-                    {{ isEditing ? 'Edit Prodi' : 'Tambah Prodi Baru' }}
-                </h2>
-
-                <div>
-                    <label for="kd_prodi" class="block text-sm font-medium text-gray-300 mb-1">Kode Prodi</label>
-                    <input id="kd_prodi" v-model="formData.Kd_Prodi" :class="inputClasses" placeholder="Contoh: TIF"
-                        required :disabled="isEditing" maxlength="10" />
-                    <small v-if="isEditing" class="text-gray-400 text-xs">Kode Prodi tidak dapat diubah.</small>
-                </div>
-
-                <div>
-                    <label for="nama_prodi" class="block text-sm font-medium text-gray-300 mb-1">Nama Prodi</label>
-                    <input id="nama_prodi" v-model="formData.Nama_Prodi" :class="inputClasses"
-                        placeholder="Contoh: Teknik Informatika" required maxlength="50" />
-                </div>
-
-                <div>
-                    <label for="fakultas" class="block text-sm font-medium text-gray-300 mb-1">Fakultas</label>
-                    <input id="fakultas" v-model="formData.Fakultas" :class="inputClasses"
-                        placeholder="Contoh: Fakultas Teknik" required maxlength="50" />
-                </div>
-
-                <div>
-                    <label for="ketua_prodi" class="block text-sm font-medium text-gray-300 mb-1">Nama Ketua Prodi
-                        (Opsional)</label>
-                    <input id="ketua_prodi" v-model="formData.Nama_KetuaProdi" :class="inputClasses"
-                        placeholder="Contoh: Dr. Budi Santoso" maxlength="50" />
-                </div>
-
-                <div class="flex gap-4 pt-2">
-                    <button type="submit" :class="[buttonClasses, 'bg-cyan-600 hover:bg-cyan-700']"
-                        :disabled="isSubmitting">
-                        {{ isSubmitting ? 'Menyimpan...' : (isEditing ? 'Update Prodi' : 'Simpan Prodi') }}
-                    </button>
-
-                    <button v-if="isEditing" type="button" @click="resetForm"
-                        :class="[buttonClasses, 'bg-gray-600 hover:bg-gray-700']" :disabled="isSubmitting">
-                        Batal
-                    </button>
-                </div>
-            </form>
-
-            <h2 class="text-2xl font-semibold text-white mb-4">
-                Daftar Prodi
-            </h2>
-
-            <!-- List prodi -->
-            <div v-if="prodiData && prodiData.data && prodiData.data.length > 0" class="space-y-3">
-                <div v-for="prodi in prodiData.data" :key="prodi.Kd_Prodi"
-                    class="bg-gray-800 p-4 rounded-lg shadow-md flex flex-col md:flex-row md:items-center md:justify-between gap-3">
-                    <div class="flex-1">
-                        <h3 class="text-lg font-semibold text-cyan-300">{{ prodi.Nama_Prodi }} ({{ prodi.Kd_Prodi }})</h3>
-                        <p class="text-sm text-gray-300">{{ prodi.Fakultas }}</p>
-                        <p v-if="prodi.Nama_KetuaProdi" class="text-sm text-gray-400 mt-1">
-                            Kaprodi: {{ prodi.Nama_KetuaProdi }}
-                        </p>
-                    </div>
-
-                    <div class="flex-shrink-0 flex gap-2">
-                        <button @click="startEdit(prodi)"
-                            :class="[buttonClasses, 'bg-yellow-600 hover:bg-yellow-700 text-sm']" aria-label="Edit prodi">
-                            Edit
-                        </button>
-                        <button @click="handleDelete(prodi.Kd_Prodi)"
-                            :class="[buttonClasses, 'bg-red-600 hover:bg-red-700 text-sm']" aria-label="Hapus prodi">
-                            Delete
-                        </button>
-                    </div>
-                </div>
+        <div v-else class="w-full max-w-2xl bg-slate-900 border border-slate-800 rounded-2xl shadow-2xl overflow-hidden">
+            
+            <div class="bg-slate-800/50 p-6 border-b border-slate-800 flex justify-between items-center">
+                <h1 class="text-xl font-bold text-white flex items-center gap-3">
+                    <span class="bg-cyan-500/10 text-cyan-400 p-2 rounded-lg">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                            <path d="M17.414 2.586a2 2 0 00-2.828 0L7 9.293V12a1 1 0 001 1h2.707l6.707-6.707a2 2 0 000-2.828zM5 12a1 1 0 100 2h2.586l-2.586-2.586V12z" />
+                        </svg>
+                    </span>
+                    Edit Program Studi
+                </h1>
+                <NuxtLink to="/prodi" class="text-sm text-slate-400 hover:text-white transition-colors">
+                    &larr; Kembali
+                </NuxtLink>
             </div>
 
-            <div v-else class="text-center text-gray-500 bg-gray-800 p-8 rounded-md">
-                Belum ada data program studi. Silakan tambahkan melalui form di atas.
+            <div class="p-8">
+                <form @submit.prevent="handleUpdate" class="space-y-6">
+                    
+                    <div class="bg-slate-950/50 p-4 rounded-lg border border-slate-800/50">
+                        <label class="block text-xs font-bold text-slate-500 uppercase mb-1">Kode Prodi (ID)</label>
+                        <div class="font-mono text-lg text-slate-300 tracking-wide select-all">
+                            {{ formData.Kd_Prodi }}
+                        </div>
+                        <p class="text-xs text-slate-600 mt-1">* Primary Key tidak dapat diubah</p>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="space-y-2">
+                            <label class="text-sm font-medium text-slate-300">Nama Prodi</label>
+                            <input v-model="formData.Nama_Prodi" required maxlength="50"
+                                class="w-full bg-slate-800 border border-slate-700 text-white rounded-xl focus:ring-2 focus:ring-cyan-500 focus:border-transparent px-4 py-3 transition-all" />
+                        </div>
+
+                        <div class="space-y-2">
+                            <label class="text-sm font-medium text-slate-300">Fakultas</label>
+                            <input v-model="formData.Fakultas" required maxlength="50"
+                                class="w-full bg-slate-800 border border-slate-700 text-white rounded-xl focus:ring-2 focus:ring-cyan-500 focus:border-transparent px-4 py-3 transition-all" />
+                        </div>
+                    </div>
+
+                    <div class="space-y-2">
+                        <label class="text-sm font-medium text-slate-300">Ketua Program Studi</label>
+                        <input v-model="formData.Nama_KetuaProdi" maxlength="50"
+                            class="w-full bg-slate-800 border border-slate-700 text-white rounded-xl focus:ring-2 focus:ring-cyan-500 focus:border-transparent px-4 py-3 transition-all" />
+                    </div>
+
+                    <div class="pt-4 flex gap-4">
+                        <button type="submit" :disabled="isSubmitting"
+                            class="flex-1 bg-cyan-600 hover:bg-cyan-500 text-white font-bold py-3 px-6 rounded-xl transition-all shadow-lg shadow-cyan-900/20 disabled:opacity-50">
+                            {{ isSubmitting ? 'Menyimpan...' : 'Simpan Perubahan' }}
+                        </button>
+                        
+                        <NuxtLink to="/prodi" 
+                            class="px-6 py-3 rounded-xl border border-slate-700 text-slate-300 hover:bg-slate-800 hover:text-white transition-colors text-center font-medium">
+                            Batal
+                        </NuxtLink>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
