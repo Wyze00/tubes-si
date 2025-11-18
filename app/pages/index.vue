@@ -4,7 +4,7 @@ router.push('/prodi');
 </script>
 
 <template>
-  <div>
+  <div class="min-h-screen bg-slate-950">
     redirect
   </div>
 </template>
