@@ -1,0 +1,48 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Prodi {
+  Kd_Prodi String @id @db.Char(10)
+  Nama_Prodi String @db.VarChar(50)
+  Fakultas String @db.VarChar(50)
+  Nama_KetuaProdi String? @db.VarChar(50)
+}
+
+model Mahasiswa {
+  NIM String @id @db.Char(7)
+  Nama_Mhs String @db.VarChar(256)
+  
+  nilai Nilai[]
+}
+
+model Matkul {
+  Kd_Matkul String @id @db.VarChar(10)
+  Nama_Matkul String @db.VarChar(50) 
+  SKS Int
+
+  nilai Nilai[]
+}
+
+model Nilai {
+  NIM String @db.Char(7)
+  Kd_Matkul String @db.VarChar(10)
+  Nilai String @db.VarChar(256)
+  Grade  String @db.VarChar(256)
+
+  Mahasiswa Mahasiswa @relation(fields: [NIM], references: [NIM])
+  Matkul Matkul @relation(fields: [Kd_Matkul], references: [Kd_Matkul])
+
+  @@id([NIM, Kd_Matkul])
+}
