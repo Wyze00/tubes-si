@@ -3,7 +3,7 @@ const route = useRoute();
 const router = useRouter();
 const kode = route.params.kode as string;
 
-// --- Fetch Single Data ---
+// Fetch data
 const { data: detailData, pending, error } = await useFetch(`/api/matkul/${kode}`);
 
 // State Form
@@ -27,7 +27,7 @@ watchEffect(() => {
     }
 });
 
-// --- Action: Update ---
+// Tombol update
 async function handleUpdate() {
     isSubmitting.value = true;
     try {
@@ -36,7 +36,7 @@ async function handleUpdate() {
             body: formData.value,
         });
         alert('Data berhasil diperbarui!');
-        router.push('/matkul'); // Kembali ke list
+        router.push('/matkul');
     } catch (err) {
         console.error(err);
         alert('Gagal memperbarui data.');
@@ -63,7 +63,8 @@ async function handleUpdate() {
                 <h1 class="text-xl font-bold text-white flex items-center gap-3">
                     <span class="bg-emerald-500/10 text-emerald-400 p-2 rounded-lg">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                            <path d="M9 4.804A7.968 7.968 0 005.5 4c-1.255 0-2.443.29-3.5.804v10A7.969 7.969 0 015.5 14c1.669 0 3.218.51 4.5 1.385A7.962 7.962 0 0114.5 14c1.255 0 2.443.29 3.5.804v-10A7.968 7.968 0 0014.5 4c-1.255 0-2.443.29-3.5.804V12a1 1 0 11-2 0V4.804z" />
+                            <path
+                                d="M9 4.804A7.968 7.968 0 005.5 4c-1.255 0-2.443.29-3.5.804v10A7.969 7.969 0 015.5 14c1.669 0 3.218.51 4.5 1.385A7.962 7.962 0 0114.5 14c1.255 0 2.443.29 3.5.804v-10A7.968 7.968 0 0014.5 4c-1.255 0-2.443.29-3.5.804V12a1 1 0 11-2 0V4.804z" />
                         </svg>
                     </span>
                     Edit Mata Kuliah
@@ -104,7 +105,7 @@ async function handleUpdate() {
                             {{ isSubmitting ? 'Menyimpan...' : 'Simpan Perubahan' }}
                         </button>
 
-                        <NuxtLink to="/matkul" 
+                        <NuxtLink to="/matkul"
                             class="px-6 py-3 rounded-xl border border-slate-700 text-slate-300 hover:bg-slate-800 hover:text-white transition-colors text-center font-medium">
                             Batal
                         </NuxtLink>

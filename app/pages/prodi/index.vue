@@ -1,8 +1,8 @@
 <script setup lang="ts">
-// --- Fetch Data ---
+// Fetch semua data
 const { data: prodiData, refresh, status } = await useFetch('/api/prodi');
 
-// --- Form State untuk Create ---
+// Form untuk tambah data
 const formData = ref({
     Kd_Prodi: '',
     Nama_Prodi: '',
@@ -12,7 +12,7 @@ const formData = ref({
 
 const isSubmitting = ref(false);
 
-// --- Action: Create ---
+// Tombol create
 async function handleCreate() {
     isSubmitting.value = true;
     try {
@@ -20,8 +20,7 @@ async function handleCreate() {
             method: 'POST',
             body: formData.value,
         });
-        await refresh(); // Refresh list data
-        // Reset form
+        await refresh();
         formData.value = { Kd_Prodi: '', Nama_Prodi: '', Fakultas: '', Nama_KetuaProdi: '' };
         alert('Prodi berhasil ditambahkan!');
     } catch (err) {
@@ -32,7 +31,7 @@ async function handleCreate() {
     }
 }
 
-// --- Action: Delete ---
+// Tombol delete
 async function handleDelete(kode: string) {
     if (!confirm(`Hapus prodi ${kode}?`)) return;
     try {
@@ -46,20 +45,12 @@ async function handleDelete(kode: string) {
 
 <template>
     <div class="min-h-screen bg-slate-950 text-slate-200 font-sans selection:bg-cyan-500 selection:text-white">
-        
-        <div class="bg-slate-900 border-b border-slate-800 sticky top-0 z-10">
-            <div class="max-w-6xl mx-auto px-6 py-4 flex justify-between items-center">
-                <h1 class="text-2xl font-bold bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent">
-                    Portal Akademik
-                </h1>
-                <span class="text-sm font-medium text-slate-400">Manajemen Prodi</span>
-            </div>
-        </div>
 
         <div class="max-w-6xl mx-auto px-6 py-10 grid grid-cols-1 lg:grid-cols-3 gap-10">
-            
+
             <div class="lg:col-span-1">
-                <div class="bg-slate-900/50 backdrop-blur-sm border border-slate-800 rounded-2xl p-6 sticky top-24 shadow-xl">
+                <div
+                    class="bg-slate-900/50 backdrop-blur-sm border border-slate-800 rounded-2xl p-6 sticky top-24 shadow-xl">
                     <h2 class="text-xl font-semibold text-white mb-6 flex items-center gap-2">
                         <span class="w-2 h-6 bg-cyan-500 rounded-full"></span>
                         Tambah Prodi
@@ -111,15 +102,18 @@ async function handleDelete(kode: string) {
                 </div>
 
                 <div v-else-if="prodiData?.data?.length" class="grid gap-4">
-                    <div v-for="item in prodiData.data" :key="item.Kd_Prodi" 
+                    <div v-for="item in prodiData.data" :key="item.Kd_Prodi"
                         class="group bg-slate-800 border border-slate-700/50 hover:border-cyan-500/50 rounded-xl p-5 transition-all hover:shadow-lg hover:shadow-cyan-900/10 relative overflow-hidden">
-                        
-                        <div class="absolute top-0 right-0 w-24 h-24 bg-cyan-500/5 rounded-full blur-2xl -mr-10 -mt-10 transition-all group-hover:bg-cyan-500/10"></div>
+
+                        <div
+                            class="absolute top-0 right-0 w-24 h-24 bg-cyan-500/5 rounded-full blur-2xl -mr-10 -mt-10 transition-all group-hover:bg-cyan-500/10">
+                        </div>
 
                         <div class="flex justify-between items-start relative z-10">
                             <div>
                                 <div class="flex items-center gap-3 mb-1">
-                                    <span class="font-mono text-xs bg-slate-950 text-cyan-400 px-2 py-1 rounded border border-slate-700">
+                                    <span
+                                        class="font-mono text-xs bg-slate-950 text-cyan-400 px-2 py-1 rounded border border-slate-700">
                                         {{ item.Kd_Prodi }}
                                     </span>
                                     <h3 class="font-bold text-lg text-white group-hover:text-cyan-400 transition-colors">
@@ -137,11 +131,13 @@ async function handleDelete(kode: string) {
 
                             <div class="flex gap-2">
                                 <NuxtLink :to="`/prodi/${item.Kd_Prodi}`"
-                                    class="p-2 bg-slate-700 hover:bg-cyan-600 text-slate-300 hover:text-white rounded-lg transition-colors" title="Edit Detail">
+                                    class="p-2 bg-slate-700 hover:bg-cyan-600 text-slate-300 hover:text-white rounded-lg transition-colors"
+                                    title="Edit Detail">
                                     Edit
                                 </NuxtLink>
                                 <button @click="handleDelete(item.Kd_Prodi)"
-                                    class="p-2 bg-slate-700 hover:bg-red-600 text-slate-300 hover:text-white rounded-lg transition-colors" title="Hapus">
+                                    class="p-2 bg-slate-700 hover:bg-red-600 text-slate-300 hover:text-white rounded-lg transition-colors"
+                                    title="Hapus">
                                     Hapus
                                 </button>
                             </div>
@@ -151,8 +147,7 @@ async function handleDelete(kode: string) {
 
                 <div v-else class="text-center py-12 bg-slate-900 rounded-xl border border-dashed border-slate-700">
                     <p class="text-slate-500">Belum ada data prodi.</p>
-                </div>
             </div>
         </div>
     </div>
-</template>
+</div></template>

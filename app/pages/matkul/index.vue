@@ -1,8 +1,9 @@
 <script setup lang="ts">
-// --- Fetch Data ---
+
+// Fetch semua data matkul    
 const { data: matkulData, refresh, status } = await useFetch('/api/matkul');
 
-// --- Form State ---
+// Form untuk tambah data
 const formData = ref({
     Kd_Matkul: '',
     Nama_Matkul: '',
@@ -11,7 +12,7 @@ const formData = ref({
 
 const isSubmitting = ref(false);
 
-// --- Action: Create ---
+// Tombol create
 async function handleCreate() {
     isSubmitting.value = true;
     try {
@@ -20,7 +21,7 @@ async function handleCreate() {
             body: formData.value,
         });
         await refresh();
-        formData.value = { Kd_Matkul: '', Nama_Matkul: '', SKS: 0 }; // Reset form
+        formData.value = { Kd_Matkul: '', Nama_Matkul: '', SKS: 0 };
         alert('Matkul berhasil ditambahkan!');
     } catch (err) {
         console.error(err);
@@ -30,7 +31,7 @@ async function handleCreate() {
     }
 }
 
-// --- Action: Delete ---
+// Tombol delete
 async function handleDelete(kode: string) {
     if (!confirm(`Hapus matkul ${kode}?`)) return;
     try {
@@ -44,18 +45,6 @@ async function handleDelete(kode: string) {
 
 <template>
     <div class="min-h-screen bg-slate-950 text-slate-200 font-sans selection:bg-emerald-500 selection:text-white">
-
-        <div class="bg-slate-900 border-b border-slate-800 sticky top-0 z-10">
-            <div class="max-w-6xl mx-auto px-6 py-4 flex justify-between items-center">
-                <h1 class="text-2xl font-bold bg-gradient-to-r from-emerald-400 to-teal-500 bg-clip-text text-transparent">
-                    Portal Akademik
-                </h1>
-                <div class="flex gap-4 text-sm font-medium">
-                     <NuxtLink to="/prodi" class="text-slate-400 hover:text-white transition-colors">Prodi</NuxtLink>
-                     <span class="text-emerald-400">Matkul</span>
-                </div>
-            </div>
-        </div>
 
         <div class="max-w-6xl mx-auto px-6 py-10 grid grid-cols-1 lg:grid-cols-3 gap-10">
 

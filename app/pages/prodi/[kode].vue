@@ -3,7 +3,7 @@ const route = useRoute();
 const router = useRouter();
 const kodeProdi = route.params.kode as string;
 
-// --- Fetch Single Data ---
+// Fetch data
 const { data: detailData, pending, error } = await useFetch(`/api/prodi/${kodeProdi}`);
 
 // State Form
@@ -29,7 +29,7 @@ watchEffect(() => {
     }
 });
 
-// --- Action: Update ---
+// Tombol update
 async function handleUpdate() {
     isSubmitting.value = true;
     try {
@@ -38,7 +38,7 @@ async function handleUpdate() {
             body: formData.value,
         });
         alert('Data berhasil diperbarui!');
-        router.push('/prodi'); // Kembali ke list
+        router.push('/prodi');
     } catch (err) {
         console.error(err);
         alert('Gagal memperbarui data.');

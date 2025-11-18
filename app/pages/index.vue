@@ -1,8 +1,10 @@
+<script setup lang="ts">
+const router = useRouter();
+router.push('/prodi');
+</script>
+
 <template>
   <div>
-    <ul>
-      <NuxtLink to="/prodi">Prodi</NuxtLink>
-      <NuxtLink to="/matkul">Matkul</NuxtLink>
-    </ul>
+    redirect
   </div>
 </template>
