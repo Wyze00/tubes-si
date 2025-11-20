@@ -23,6 +23,8 @@ model Prodi {
 model Mahasiswa {
   NIM String @id @db.Char(7)
   Nama_Mhs String @db.VarChar(256)
+  
+  nilai Nilai[]
 }
 
 model Matkul {
