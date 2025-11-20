@@ -25,7 +25,7 @@ async function handleCreate() {
         alert('Prodi berhasil ditambahkan!');
     } catch (err) {
         console.error(err);
-        alert('Gagal menambah prodi. Pastikan Kode Prodi unik.');
+        alert(err);
     } finally {
         isSubmitting.value = false;
     }
@@ -147,7 +147,8 @@ async function handleDelete(kode: string) {
 
                 <div v-else class="text-center py-12 bg-slate-900 rounded-xl border border-dashed border-slate-700">
                     <p class="text-slate-500">Belum ada data prodi.</p>
+                </div>
             </div>
         </div>
     </div>
-</div></template>
+</template>
