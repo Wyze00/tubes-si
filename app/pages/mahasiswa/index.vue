@@ -1,5 +1,15 @@
+<script setup lang="ts">
+
+
+// fetch all mahasiswa
+
+// /mahasiswa/nim
+
+
+</script>
+
 <template>
-  <div class="min-h-screen bg-slate-950">
-    Tambah & List mahasiswa
+  <div>
+    Detail mahasiswa, update, list matkul yang diambil dan yang tidak diambil
   </div>
 </template>

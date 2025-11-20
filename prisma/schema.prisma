@@ -18,12 +18,17 @@ model Prodi {
   Nama_Prodi String @db.VarChar(50)
   Fakultas String @db.VarChar(50)
   Nama_KetuaProdi String? @db.VarChar(50)
+
+  mahasiswa Mahasiswa[]
 }
 
 model Mahasiswa {
   NIM String @id @db.Char(7)
   Nama_Mhs String @db.VarChar(256)
-  
+  Alamat String @db.VarChar(256)
+  Kd_Prodi String @db.Char(10)
+
+  Prodi Prodi @relation(fields: [Kd_Prodi], references: [Kd_Prodi])
   nilai Nilai[]
 }
 

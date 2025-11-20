@@ -1,3 +1,4 @@
+import { Matkul } from "@prisma/client";
 import { PrismaService } from "~~/server/util/prismaService";
 
 export default defineEventHandler(async (event) => {

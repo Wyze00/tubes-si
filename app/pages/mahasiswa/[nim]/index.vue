@@ -1,5 +1,17 @@
+<script setup lang="ts">
+
+  // nim = 1
+
+  // fetch /api/nilai/nim
+  // nilai -> kode_matkul
+
+  // /mahasiswa/nim/kode
+
+  
+</script>
+
 <template>
   <div>
-    Detail mahasiswa, update, list matkul yang diambil dan yang tidak diambil
+    Info matkulyang diambil dan update nilai
   </div>
 </template>
