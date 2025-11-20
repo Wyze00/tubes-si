@@ -5,8 +5,8 @@ export default defineEventHandler(async (event) => {
   const data = await PrismaService.getInstance().mahasiswa.findMany();
 
   data.forEach((mahasiswa) => {
-    mahasiswa.Nama_mhs = AesService.decrypt(mahasiswa.Nama_mhs);
-  })
+    mahasiswa.Nama_Mhs = AesService.decrypt(mahasiswa.Nama_Mhs);
+  });
 
   return {
     message: "Success fetch data",

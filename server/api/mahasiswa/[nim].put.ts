@@ -1,12 +1,14 @@
+import { Mahasiswa } from "@prisma/client";
+import { AesService } from "~~/server/util/aesService";
 import { PrismaService } from "~~/server/util/prismaService";
 
 export default defineEventHandler(async (event) => {
-    const nim = getRouterParam(event, "nim");
-    const body = await readBody(event);
+    const kode = getRouterParam(event, "kode");
+    const body = await readBody(event) as Mahasiswa;
 
     const dataToUpdate = {
         ...body,
-        : parseInt(body.SKS),
+        Nama_Mhs: AesService.encrypt(body.Nama_Mhs)
     };
 
     const updated = await PrismaService.getInstance().matkul.update({
