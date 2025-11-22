@@ -6,7 +6,7 @@ export default defineEventHandler(async (event) => {
 
     const dataToCreate = {
         ...body,
-        Nama_Mhs: AesService.encrypt(body.Nama_Mhs)
+        Nama_Mhs: AesService.encrypt(body.Nama_Mhs),
     };
 
     const newMahasiswa = await PrismaService.getInstance().mahasiswa.create({
@@ -15,6 +15,6 @@ export default defineEventHandler(async (event) => {
 
     return {
         message: "Data created successfully",
-        data: newMahasiswa;
+        data: newMahasiswa,
     };
 });
