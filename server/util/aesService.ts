@@ -7,7 +7,8 @@ export class AesService {
   private static aes: AesEncryption;
 
   static {
-    const secretKey = process.env.AES_SECRET_KEY;
+    const secretKey =
+      "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
 
     if (!secretKey || secretKey.length !== 64) {
       throw new Error("AES_SECRET_KEY must be 64 characters long");
