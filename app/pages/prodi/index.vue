@@ -47,7 +47,7 @@ function closeModal() {
 }
 
 function openUpdateModal(data: Prodi) {
-    formData.value = data;
+    formData.value = { ...data };
     isUpdateModalOpen.value = true;
 }
 
@@ -106,7 +106,7 @@ async function handleUpdate(kode: string) {
 
             <!-- Header Section -->
             <div class="mb-8">
-                <h1 class="text-3xl font-bold text-gray-900 mb-2">Manajemen Prodi</h1>
+                <h1 class="text-3xl font-bold text-gray-900 mb-2">Manajemen Program Studi</h1>
                 <p class="text-gray-600">Kelola data program studi</p>
             </div>
 
@@ -170,7 +170,14 @@ async function handleUpdate(kode: string) {
                         </thead>
                         <tbody class="bg-white divide-y divide-gray-200">
 
-                            <!-- Data Rows -->
+                            <!-- Data -->
+                            <tr v-if="status === 'pending'">
+                                <td colspan="5" class="px-6 py-8 text-center text-gray-500 animate-pulse">Memuat data...
+                                </td>
+                            </tr>
+                            <tr v-else-if="filteredProdi.length === 0">
+                                <td colspan="5" class="px-6 py-8 text-center text-gray-500">Data tidak ditemukan.</td>
+                            </tr>
                             <tr v-for="(item, index) in filteredProdi" :key="item.Kd_Prodi"
                                 class="hover:bg-gray-50 transition-colors animate-fade-in">
                                 <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
@@ -194,10 +201,10 @@ async function handleUpdate(kode: string) {
                                 <td class="px-6 py-4 whitespace-nowrap text-center">
                                     {{ item.Nama_KetuaProdi }}
                                 </td>
-                                <td class="px-6 py-4 whitespace-nowrap text-center">
+                                <td class="px-6 py-4 whitespace-nowrap text-center text-sm font-medium">
                                     <div class="flex justify-center space-x-2">
                                         <button @click="openUpdateModal(item)"
-                                            class="inline-flex cursor-pointer items-center px-3 py-1 bg-primary-50 text-primary-700 text-sm font-medium rounded-lg hover:bg-primary-100 focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 transition-colors">
+                                            class="inline-flex items-center px-3 py-1 bg-blue-50 text-blue-600 hover:bg-blue-100 rounded-lg transition-colors text-xs font-medium">
                                             <svg class="h-4 w-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                                     d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z">
@@ -206,7 +213,7 @@ async function handleUpdate(kode: string) {
                                             Edit
                                         </button>
                                         <button @click="handleDelete(item.Kd_Prodi)"
-                                            class="inline-flex cursor-pointer items-center px-3 py-1 bg-error-50 text-error-700 text-sm font-medium rounded-lg hover:bg-error-100 focus:ring-2 focus:ring-error-500 focus:ring-offset-2 transition-colors">
+                                            class="inline-flex items-center px-3 py-1 bg-red-50 text-red-600 hover:bg-red-100 rounded-lg transition-colors text-xs font-medium">
                                             <svg class="h-4 w-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                                     d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16">
@@ -288,7 +295,7 @@ async function handleUpdate(kode: string) {
                                 class="w-full bg-white border border-gray-300 text-gray-900 rounded-lg p-2.5" />
                             <input v-else disabled="true" v-model="formData.Kd_Prodi" maxlength="10" required
                                 placeholder="IF-2024"
-                                class="w-full bg-gray-100 border border-gray-300 text-gray-900 rounded-lg p-2.5" />
+                                class="w-full bg-gray-100 border border-gray-300 text-gray-900 rounded-lg p-2.5 cursor-not-allowed" />
                         </div>
                         <div>
                             <label class="block text-xs font-bold text-gray-500 uppercase mb-1">Nama Prodi</label>
