@@ -1,10 +1,12 @@
 import { PrismaService } from "~~/server/util/prismaService";
 
 export default defineEventHandler(async (event) => {
-    const kode = getRouterParam(event, "kode");
+    const kode: string = getRouterParam(event, "kode")!;
 
     await PrismaService.getInstance().matkul.delete({
-        where: { Kd_Matkul: kode },
+        where: {
+            Kd_Matkul: kode,
+        },
     });
 
     return {

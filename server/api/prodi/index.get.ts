@@ -1,4 +1,4 @@
-import { Prodi } from "@prisma/client";
+import type { Prodi } from "@prisma/client";
 import { PrismaService } from "~~/server/util/prismaService";
 
 export default defineEventHandler(async (event) => {
