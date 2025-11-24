@@ -1,8 +1,9 @@
 <script setup lang="ts">
-import type { Nilai } from '@prisma/client';
+import type { Matkul, Nilai } from '@prisma/client';
 
 const route = useRoute();
 const nim = route.params.nim as string;
+type NilaiLengkap = Nilai & { Matkul: Matkul };
 
 // Fetch Student Info, Grades, and Available Courses
 const { data: studentData } = await useFetch(`/api/mahasiswa/${nim}`);
@@ -21,7 +22,7 @@ const newGradeForm = ref({
 
 // Computed
 const student = computed(() => studentData.value?.data);
-const grades = computed(() => gradeData.value?.data || []);
+const grades = computed<NilaiLengkap[]>(() => (gradeData.value?.data || []) as NilaiLengkap[]);
 
 const availableMatkul = computed(() => {
   const allMatkul = matkulData.value?.data || [];
@@ -33,12 +34,27 @@ const availableMatkul = computed(() => {
 const stats = computed(() => {
   const nilai70plus = grades.value.filter((g: any) => parseInt(g.Nilai) >= 70).length;
   const gradeA = grades.value.filter((g: any) => g.Grade === 'A').length;
+  const ip = grades.value.reduce((acc: number, g: any) => acc + convertGradeToIP(g.Grade) * g.Matkul.SKS, 0) / (grades.value.reduce((acc: number, g: any) => acc + g.Matkul.SKS, 0) || 1);
 
   return {
     nilai70plus,
-    gradeA
+    gradeA,
+    ip: ip.toFixed(2)
   }
 });
+
+// Util
+
+function convertGradeToIP(grade: string): number {
+  switch (grade) {
+    case 'A': return 4.0;
+    case 'B': return 3.0;
+    case 'C': return 2.0;
+    case 'D': return 1.0;
+    case 'E': return 0.0;
+    default: return 0.0;
+  }
+}
 
 // Actions
 function openUpdateModal(item: Nilai) {
@@ -143,6 +159,8 @@ async function handleUpdateGrade() {
                 <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Kode</th>
                 <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Nama Matkul
                 </th>
+                <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">SKS
+                </th>
                 <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Nilai</th>
                 <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Grade</th>
                 <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Aksi</th>
@@ -161,6 +179,7 @@ async function handleUpdateGrade() {
                 </td>
                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-center">{{ item.Matkul.Nama_Matkul }}
                 </td>
+                <td class="px-6 py-4 whitespace-nowrap text-center text-sm font-bold text-gray-700">{{ item.Matkul.SKS }}</td>
                 <td class="px-6 py-4 whitespace-nowrap text-center text-sm font-bold text-gray-700">{{ item.Nilai }}</td>
                 <td class="px-6 py-4 whitespace-nowrap text-center">
                   <span :class="{
@@ -277,6 +296,10 @@ async function handleUpdateGrade() {
             <div class="flex-1 text-center">
               <div class="text-2xl font-bold text-purple-600">{{ stats.gradeA }}</div>
               <div class="text-xs text-gray-500">Grade A</div>
+            </div>
+            <div class="flex-1 text-center">
+              <div class="text-2xl font-bold text-yellow-600">{{ stats.ip }}</div>
+              <div class="text-xs text-gray-500">IP</div>
             </div>
           </div>
         </div>
