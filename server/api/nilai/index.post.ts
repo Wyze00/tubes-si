@@ -5,8 +5,6 @@ import { PrismaService } from "~~/server/util/prismaService";
 export default defineEventHandler(async (event) => {
   const body: Nilai = await readBody(event);
 
-  console.log(body);
-
   const newNilai: Nilai = await PrismaService.getInstance().nilai.create({
     data: {
       NIM: body.NIM,

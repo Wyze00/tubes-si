@@ -240,15 +240,15 @@ async function handleDelete(kode: string) {
                     <div class="flex gap-4">
                         <div class="flex-1 text-center p-2 hover:bg-gray-50 rounded-lg transition-colors">
                             <div class="text-2xl font-bold text-green-600">{{ stats.total }}</div>
-                            <div class="text-xs text-gray-500 font-medium uppercase mt-1">Total Matkul</div>
-                        </div>
+                            <div class="text-xs text-gray-500 font-medium  mt-1">Total Matkul</div>
+                        </div>  
                         <div class="flex-1 text-center p-2 hover:bg-gray-50 rounded-lg transition-colors">
                             <div class="text-2xl font-bold text-gray-600">{{ stats.sks1to2 }}</div>
-                            <div class="text-xs text-gray-500 font-medium uppercase mt-1">SKS 1-2</div>
+                            <div class="text-xs text-gray-500 font-medium  mt-1">SKS 1-2</div>
                         </div>
                         <div class="flex-1 text-center p-2 hover:bg-gray-50 rounded-lg transition-colors">
                             <div class="text-2xl font-bold text-blue-600">{{ stats.sks3plus }}</div>
-                            <div class="text-xs text-gray-500 font-medium uppercase mt-1">SKS 3+</div>
+                            <div class="text-xs text-gray-500 font-medium  mt-1">SKS 3+</div>
                         </div>
                     </div>
                 </div>
