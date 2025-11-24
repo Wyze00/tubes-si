@@ -62,7 +62,6 @@ async function handleCreate() {
         });
         await refresh();
         closeModal();
-        alert('Mata Kuliah berhasil ditambahkan!');
     } catch (err) {
         console.error(err);
         alert('Gagal menambah data. Pastikan Kode unik.');
@@ -80,7 +79,6 @@ async function handleUpdate() {
         });
         await refresh();
         closeModal();
-        alert('Mata Kuliah berhasil diubah!');
     } catch (err) {
         console.error(err);
         alert('Gagal mengubah data.');
@@ -147,11 +145,14 @@ async function handleDelete(kode: string) {
                     <table class="min-w-full divide-y divide-gray-200">
                         <thead class="bg-gray-50">
                             <tr>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                <th
+                                    class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
                                     No</th>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                <th
+                                    class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
                                     Kode</th>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                <th
+                                    class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
                                     Nama Mata Kuliah</th>
                                 <th
                                     class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
@@ -173,11 +174,12 @@ async function handleDelete(kode: string) {
                             </tr>
                             <tr v-for="(item, index) in filteredMatkul" :key="item.Kd_Matkul"
                                 class="hover:bg-gray-50 transition-colors">
-                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-500">{{ index + 1 }}
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-500 text-center">{{
+                                    index + 1 }}
                                 </td>
-                                <td class="px-6 py-4 whitespace-nowrap">
+                                <td class="px-6 py-4 whitespace-nowrap text-center">
                                     {{ item.Kd_Matkul }}</td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 font-medium">{{
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 font-medium text-center">{{
                                     item.Nama_Matkul }}</td>
                                 <td class="px-6 py-4 whitespace-nowrap text-center">
                                     <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium"

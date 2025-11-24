@@ -60,7 +60,6 @@ async function handleCreate() {
         });
         await refresh();
         closeModal();
-        alert('Prodi berhasil ditambahkan!');
     } catch (err) {
         console.error(err);
         alert('Gagal menambah prodi. Pastikan Kode unik.');
@@ -89,7 +88,6 @@ async function handleUpdate(kode: string) {
         });
         await refresh();
         closeModal();
-        alert('Prodi berhasil diubah!');
     } catch (err) {
         console.error(err);
         alert('Gagal update prodi.');
@@ -146,16 +144,20 @@ async function handleUpdate(kode: string) {
                     <table class="min-w-full divide-y divide-gray-200">
                         <thead class="bg-gray-50">
                             <tr>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                <th
+                                    class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
                                     No
                                 </th>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                <th
+                                    class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
                                     Kode
                                 </th>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                <th
+                                    class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
                                     Nama Prodi
                                 </th>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                <th
+                                    class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
                                     Fakultas
                                 </th>
                                 <th
@@ -180,23 +182,17 @@ async function handleUpdate(kode: string) {
                             </tr>
                             <tr v-for="(item, index) in filteredProdi" :key="item.Kd_Prodi"
                                 class="hover:bg-gray-50 transition-colors animate-fade-in">
-                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 text-center">
                                     {{ index + 1 }}
                                 </td>
-                                <td class="px-6 py-4 whitespace-nowrap">
+                                <td class="px-6 py-4 whitespace-nowrap text-center">
                                     {{ item.Kd_Prodi }}
                                 </td>
-                                <td class="px-6 py-4 whitespace-nowrap">
-                                    <div class="flex items-center">
-                                        <div class="">
-                                            <div class="text-sm font-medium text-gray-900">{{ item.Nama_Prodi }}</div>
-                                        </div>
-                                    </div>
+                                <td class="px-6 py-4 whitespace-nowrap text-center">
+                                    {{ item.Nama_Prodi }}
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap text-center">
-                                    <div class="flex items-center">
-                                        {{ item.Fakultas }}
-                                    </div>
+                                    {{ item.Fakultas }}
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap text-center">
                                     {{ item.Nama_KetuaProdi }}
