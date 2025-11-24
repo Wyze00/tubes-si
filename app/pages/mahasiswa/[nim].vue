@@ -74,7 +74,6 @@ async function handleDeleteGrade(kodeMatkul: string) {
     await refreshGrades();
   } catch (error) {
     alert('Gagal menghapus nilai');
-    alert(error.getMessage());
   }
 }
 
