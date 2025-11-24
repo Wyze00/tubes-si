@@ -5,11 +5,13 @@ import { PrismaService } from "~~/server/util/prismaService";
 export default defineEventHandler(async (event) => {
   const body: Nilai = await readBody(event);
 
+  console.log(body);
+
   const newNilai: Nilai = await PrismaService.getInstance().nilai.create({
     data: {
       NIM: body.NIM,
       Kd_Matkul: body.Kd_Matkul,
-      Nilai: AesService.encrypt(String(body.Nilai)),
+      Nilai: AesService.encrypt(body.Nilai),
       Grade: AesService.encrypt(body.Grade),
     },
   });

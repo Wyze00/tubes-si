@@ -1,51 +1,53 @@
 <script setup lang="ts">
+// Tidak perlu script khusus, NuxtLink menangani routing otomatis
 </script>
 
 <template>
-  <header class="sticky top-0 z-50 w-full border-b border-slate-800 bg-slate-950/80 backdrop-blur-md">
-    <div class="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
+  <header class="sticky top-0 z-50 w-full bg-white border-b border-gray-200 shadow-sm transition-all duration-300">
+    <div class="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
 
-      <div class="flex items-center gap-2">
+      <div class="flex items-center gap-3">
         <div
-          class="w-8 h-8 bg-gradient-to-br from-cyan-500 to-blue-600 rounded-lg flex items-center justify-center shadow-lg shadow-cyan-500/20">
-          <span class="text-white font-bold text-lg">P</span>
+          class="w-9 h-9 bg-gradient-to-br from-blue-600 to-indigo-600 rounded-xl flex items-center justify-center shadow-lg shadow-blue-500/20 text-white font-bold text-lg">
+          P
         </div>
-        <NuxtLink to="/"
-          class="text-xl font-bold bg-gradient-to-r from-white to-slate-400 bg-clip-text text-transparent hover:to-white transition-all">
+        <NuxtLink to="/" class="text-xl font-bold text-gray-800 tracking-tight hover:text-blue-600 transition-colors">
           Portal Akademik
         </NuxtLink>
       </div>
 
       <nav>
-        <ul class="flex items-center gap-1 bg-slate-900/50 p-1 rounded-full border border-slate-800">
+        <ul class="flex items-center gap-2">
           <li>
             <NuxtLink to="/prodi"
-              class="px-4 py-1.5 rounded-full text-sm font-medium text-slate-400 transition-all hover:text-white hover:bg-slate-800"
-              active-class="!bg-cyan-500/10 !text-cyan-400 border border-cyan-500/20 shadow-[0_0_10px_rgba(34,211,238,0.1)]">
+              class="px-4 py-2 rounded-lg text-sm font-medium text-gray-500 hover:text-blue-600 hover:bg-blue-50 transition-all duration-200"
+              active-class="!bg-blue-50 !text-blue-700 font-bold shadow-sm ring-1 ring-blue-100">
               Prodi
             </NuxtLink>
           </li>
           <li>
             <NuxtLink to="/matkul"
-              class="px-4 py-1.5 rounded-full text-sm font-medium text-slate-400 transition-all hover:text-white hover:bg-slate-800"
-              active-class="!bg-emerald-500/10 !text-emerald-400 border border-emerald-500/20 shadow-[0_0_10px_rgba(52,211,153,0.1)]">
+              class="px-4 py-2 rounded-lg text-sm font-medium text-gray-500 hover:text-blue-600 hover:bg-blue-50 transition-all duration-200"
+              active-class="!bg-blue-50 !text-blue-700 font-bold shadow-sm ring-1 ring-blue-100">
               Matkul
             </NuxtLink>
           </li>
           <li>
             <NuxtLink to="/mahasiswa"
-              class="px-4 py-1.5 rounded-full text-sm font-medium text-slate-400 transition-all hover:text-white hover:bg-slate-800"
-              active-class="!bg-violet-500/10 !text-violet-400 border border-violet-500/20 shadow-[0_0_10px_rgba(139,92,246,0.1)]">
+              class="px-4 py-2 rounded-lg text-sm font-medium text-gray-500 hover:text-blue-600 hover:bg-blue-50 transition-all duration-200"
+              active-class="!bg-blue-50 !text-blue-700 font-bold shadow-sm ring-1 ring-blue-100">
               Mahasiswa
             </NuxtLink>
           </li>
         </ul>
       </nav>
+
     </div>
   </header>
 </template>
 
 <style scoped>
+/* Opsional: Transisi halus saat berpindah menu */
 .router-link-active {
   transition: all 0.3s ease;
 }

@@ -1,7 +1,7 @@
 import { PrismaService } from "~~/server/util/prismaService";
 
 export default defineEventHandler(async (event) => {
-  const nim = getRouterParam(event, "nim");
+  const nim = getRouterParam(event, "nim")?.trim();
   const kode = getRouterParam(event, "kode");
 
   await PrismaService.getInstance().nilai.delete({

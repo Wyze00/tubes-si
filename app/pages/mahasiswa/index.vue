@@ -230,6 +230,39 @@ async function handleDelete(nim: string) {
         </div>
       </div>
 
+      <!-- Stats Footer -->
+      <div class="mt-6 bg-white rounded-xl shadow-card p-6">
+        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+          <div class="flex items-center text-sm text-gray-500">
+            <svg class="h-5 w-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+            </svg>
+            <span>Total : {{ 1 }}</span>
+          </div>
+          <div class="text-sm text-gray-500">
+            Terakhir diperbarui: {{ new Date().toLocaleDateString('id-ID') }}
+          </div>
+        </div>
+
+        <div class="mt-4 pt-4 border-t border-gray-200">
+          <div class="flex gap-4">
+            <div class="flex-1 text-center">
+              <div class="text-2xl font-bold text-green-600">{{ 1 }}</div>
+              <div class="text-xs text-gray-500">Total</div>
+            </div>
+            <div class="flex-1 text-center">
+              <div class="text-2xl font-bold text-blue-600">{{ 1 }}</div>
+              <div class="text-xs text-gray-500">Total</div>
+            </div>
+            <div class="flex-1 text-center">
+              <div class="text-2xl font-bold text-purple-600">{{ 1 }}</div>
+              <div class="text-xs text-gray-500">Total</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <!-- Modal Form -->
       <div v-if="isCreateModalOpen || isUpdateModalOpen" class="fixed inset-0 z-50 flex items-center justify-center p-4">
         <div @click="closeModal" class="absolute inset-0 bg-gray-900/50 backdrop-blur-sm transition-opacity"></div>

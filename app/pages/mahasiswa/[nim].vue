@@ -54,7 +54,7 @@ async function handleAddGrade(kode: string) {
       body: {
         NIM: nim,
         Kd_Matkul: kode,
-        Nilai: 0,
+        Nilai: '0',
         Grade: 'E'
       }
     });
@@ -74,6 +74,7 @@ async function handleDeleteGrade(kodeMatkul: string) {
     await refreshGrades();
   } catch (error) {
     alert('Gagal menghapus nilai');
+    alert(error.getMessage());
   }
 }
 
@@ -130,7 +131,7 @@ async function handleUpdateGrade() {
       </div>
 
       <div class="bg-white rounded-xl shadow-card overflow-hidden mb-8">
-        <div class="px-6 py-4 border-b border-gray-100 bg-gray-50 flex justify-between items-center">
+        <div class="px-6 py-4 border-b border-gray-200 bg-gray-50 flex justify-between items-center">
           <h3 class="font-bold text-gray-800">Mata Kuliah Diambil</h3>
           <span class="text-xs font-medium bg-blue-100 text-blue-800 px-2 py-1 rounded-full">{{ grades.length }}
             Matkul</span>
@@ -200,7 +201,7 @@ async function handleUpdateGrade() {
       </div>
 
       <div class="bg-white rounded-xl shadow-card overflow-hidden">
-        <div class="px-6 py-4 border-b border-gray-100 bg-gray-50 flex justify-between items-center">
+        <div class="px-6 py-4 border-b border-gray-200 bg-gray-50 flex justify-between items-center">
           <h3 class="font-bold text-gray-800">Tersedia untuk Diambil</h3>
           <span class="text-xs font-medium bg-green-100 text-green-800 px-2 py-1 rounded-full">{{ availableMatkul.length
           }} Tersedia</span>
